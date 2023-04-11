@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, CreateView, DeleteView, UpdateView, ListView
@@ -63,6 +64,20 @@ class KnihaUpdateView(UpdateView):
     context_object_name = 'book'
     success_url = reverse_lazy('index')
     pk_url_kwarg = 'pk'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['next'] = self.request.META.get('HTTP_REFERER', self.success_url)
+        return initial
+
+    def get_success_url(self):
+        return self.request.POST.get('next', self.success_url)
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('cancel'):
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return super().post(request, *args, **kwargs)
 
 
 class KnihaDeleteView(DeleteView):
