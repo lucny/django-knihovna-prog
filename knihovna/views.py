@@ -58,8 +58,9 @@ class KnihaCreateView(CreateView):
 
 class KnihaUpdateView(UpdateView):
     model = Kniha
-    template_name = 'kniha/book_form.html'
+    template_name = 'kniha/book_form_crispy.html'
     form_class = KnihaForm
+    context_object_name = 'book'
     success_url = reverse_lazy('index')
     pk_url_kwarg = 'pk'
 

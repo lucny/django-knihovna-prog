@@ -20,6 +20,31 @@
                 {{ form.pocet_stran.label }}</label>
             {{ form.pocet_stran }}
         </div>
+        <div class="form-group">
+            <label for="{{ form.autori.id_for_label }}">
+                {{ form.autori.label }}</label>
+            {{ form.autori }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.zanry.id_for_label }}">
+                {{ form.zanry.label }}</label>
+            {{ form.zanry }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.vydavatelstvi.id_for_label }}">
+                {{ form.vydavatelstvi.label }}</label>
+            {{ form.vydatelstvi }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.rok_vydani.id_for_label }}">
+                {{ form.rok_vydani.label }}</label>
+            {{ form.rok_vydani }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.obalka.id_for_label }}">
+                {{ form.obalka.label }}</label>
+            {{ form.obalka }}
+        </div>
         <button type="submit">Potvrdit</button>
     </form>
 {% endblock %}
