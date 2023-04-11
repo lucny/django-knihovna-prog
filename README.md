@@ -1,1 +1,1 @@
-# django-knihovna-prog
+# Aplikace v Django - Školní knihovna

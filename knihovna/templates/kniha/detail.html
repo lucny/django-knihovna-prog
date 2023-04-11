@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ kniha }}{% endblock %}
+
+{% block content %}
+    <h2>{% for autor in kniha.autori.all %}
+        <a href="{% url 'author_detail' autor.id %}">{{ autor }}</a>
+        {% endfor %}
+        : {{ kniha.titul }}</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{{ kniha.obalka.url }}" alt="{{ kniha }}"
+                 class="img-fluid">
+            <p>Vydavatelství: {{ kniha.vydavatelstvi }}</p>
+            <p>Rok vydání: {{ kniha.rok_vydani }}</p>
+            <p>Počet stran: {{ kniha.pocet_stran }}</p>
+            <hr>
+            <h4>Žánry</h4>
+            <ul>
+                {% for zanr in kniha.zanry.all %}
+                    <li><a href="{% url 'books_by_genre' zanr.id %}">{{ zanr }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <h3>Obsah knihy</h3>
+            <div>{{ kniha.obsah }}</div>
+        </div>
+    </div>
+{% endblock %}
