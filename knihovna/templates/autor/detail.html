@@ -27,4 +27,12 @@
             <div>{{ author.biografie }}</div>
         </div>
     </div>
+    <div class="mt-2 mb-2">
+        {% if perms.knihovna.change_autor and user == author.editor %}
+           <a href="{% url 'update_autor' author.id %}" class="btn btn-primary">Editovat</a>
+        {% endif %}
+        {% if perms.knihovna.delete_autor and user == author.editor %}
+           <a href="{% url 'delete_autor' author.id %}" class="btn btn-danger">Smazat</a>
+        {% endif %}
+    </div>
 {% endblock %}

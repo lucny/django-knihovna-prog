@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Vymazání záznamu o autorovi</h2>
+    <p>Are you sure you want to delete "{{ author }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'authors' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+{% endblock %}

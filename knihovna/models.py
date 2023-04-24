@@ -12,6 +12,7 @@ class Autor(models.Model):
     umrti = models.DateField(blank=True, null=True, verbose_name='Datum úmrtí')
     biografie = models.TextField(blank=True, verbose_name='Životopis')
     fotografie = models.ImageField(upload_to='autori', verbose_name='Fotografie')
+    editor = models.ForeignKey(User, on_delete=models.RESTRICT, default=1)
 
     class Meta:
         ordering = ['prijmeni', 'jmeno']
