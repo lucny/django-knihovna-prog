@@ -1,1 +1,2 @@
-# Aplikace v Django - Školní knihovna
+# Aplikace v Django - Školní 
+## Ukázkový příklad
