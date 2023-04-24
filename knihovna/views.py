@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -50,20 +51,39 @@ def knihy_podle_zanru(request, id):
     return render(request, 'kniha/zanr.html', context=context)
 
 
-class KnihaCreateView(CreateView):
+
+class KnihaCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Kniha
-    template_name = 'kniha/book_form.html'
+    # template_name = 'kniha/book_form_simple.html'
+    template_name = 'kniha/book_form_crispy.html'
     form_class = KnihaForm
     success_url = reverse_lazy('index')
+    permission_required = ["knihovna.add_kniha"]
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['next'] = self.request.META.get('HTTP_REFERER', self.success_url)
+        initial['editor'] = self.request.user
+        return initial
+
+    def get_success_url(self):
+        return self.request.POST.get('next', self.success_url)
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('cancel'):
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return super().post(request, *args, **kwargs)
 
 
-class KnihaUpdateView(UpdateView):
+class KnihaUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Kniha
     template_name = 'kniha/book_form_crispy.html'
     form_class = KnihaForm
     context_object_name = 'book'
     success_url = reverse_lazy('index')
     pk_url_kwarg = 'pk'
+    permission_required = ["knihovna.change_kniha"]
 
     def get_initial(self):
         initial = super().get_initial()
@@ -79,10 +99,19 @@ class KnihaUpdateView(UpdateView):
         else:
             return super().post(request, *args, **kwargs)
 
+    def test_func(self):
+        kniha = self.get_object()
+        return kniha.editor == self.request.user
 
-class KnihaDeleteView(DeleteView):
+
+class KnihaDeleteView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Kniha
     template_name = 'kniha/book_confirm_form.html'
     success_url = reverse_lazy('index')
     context_object_name = 'book'
     pk_url_kwarg = 'pk'
+    permission_required = ["knihovna.delete_kniha"]
+
+    def test_func(self):
+        kniha = self.get_object()
+        return kniha.editor == self.request.user

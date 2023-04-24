@@ -6,12 +6,12 @@ from .models import Kniha
 
 
 class KnihaForm(forms.ModelForm):
-    next = forms.CharField(widget=forms.HiddenInput())
+    next = forms.CharField(widget=forms.TextInput())
     class Meta:
         model = Kniha
         fields = ['titul', 'obsah', 'pocet_stran',
                   'rok_vydani', 'autori', 'obalka',
-                  'vydavatelstvi', 'zanry']
+                  'vydavatelstvi', 'zanry', 'editor']
         widgets = {
             'titul': forms.TextInput(attrs={'class': 'form-control',
                                            'placeholder': 'Zadej titul knihy'}),
@@ -28,7 +28,8 @@ class KnihaForm(forms.ModelForm):
             'rok_vydani': forms.NumberInput(attrs={'class': 'form-control',
                                            'value': '2023', 'min': 1000, 'max': 2023}),
             'obalka': forms.ClearableFileInput(attrs={'class': 'form-control',
-                                           'placeholder': 'Vlož obrázek'})
+                                           'placeholder': 'Vlož obrázek'}),
+            'editor': forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'})
         }
         labels = {
             'titul': 'Titul knihy',
@@ -69,6 +70,7 @@ class KnihaForm(forms.ModelForm):
                 'vydavatelstvi',
                 'rok_vydani',
                 'obalka',
+                'editor',
                 'next',
             ),
             FormActions(

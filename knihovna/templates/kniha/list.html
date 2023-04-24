@@ -28,14 +28,21 @@
             <td>{{ book.rok_vydani }}</td>
             <td>{{ book.pocet_stran }}</td>
             <td>
+                {% if perms.knihovna.change_kniha and user == book.editor %}
                 <a href="{% url 'update_book' book.id %}" class="btn btn-primary">Editovat</a>
+                {% endif %}
+                {% if perms.knihovna.delete_kniha and user == book.editor %}
                 <a href="{% url 'delete_book' book.id %}" class="btn btn-danger">Smazat</a>
+                {% endif %}
             </td>
         </tr>
       {% endfor %}
       </tbody>
     </table>
-  </div>
+
+  <p>{{ perms.knihovna }}</p>
+  {% if perms.knihovna.add_kniha %}
   <div><a href="{% url 'add_book' %}" class="btn btn-success">Nová kniha</a></div>
+  {% endif %}
 
 {% endblock %}

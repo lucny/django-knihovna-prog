@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -58,6 +59,7 @@ class Kniha(models.Model):
                                              verbose_name='Rok vydání', help_text='Zadejte rok vydání (1500 - 2100)')
     obalka = models.ImageField(upload_to='obalky', verbose_name='Obálka knihy')
     zanry = models.ManyToManyField(Zanr)
+    editor = models.ForeignKey(User, on_delete=models.RESTRICT, default=1)
     vydavatelstvi = models.ForeignKey('Vydavatelstvi', on_delete=models.CASCADE, blank=True, null=True, verbose_name='Vydavatelství')
 
     class Meta:
